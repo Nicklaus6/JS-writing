@@ -1,0 +1,45 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-23 20:31:42
+ * @LastEditTime: 2021-01-24 16:33:13
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \21道JS手写面试题\7.实现instanceOf.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现instanceOf</title>
+</head>
+<body>
+  <script>
+    function myInstanceof(left,right) {
+      // right 得是个构造函数,不能是箭头函数或实例对象。
+      if (typeof right !== 'function'){
+        throw new TypeError('Right-hand side of \'instanceof\' is not callable')
+      }
+      
+      // left不能是基本类型。记得考虑 typeof null 这个特殊情况。
+      if(typeof left !== 'object'|| left === null) return false;
+      
+      // Object.getPrototypeOf() 方法返回指定对象的原型
+      let proto = Object.getPrototypeOf(left);
+      while(true){	// 循环在原型链往下找
+        console.log(proto)
+        if(proto === null) return false;
+        // 找到相同的原型对象，返回 true
+        if (proto === right.prototype) return true;
+        // 没找到就继续往下一个原型找
+        proto = Object.getPrototypeOf(proto)
+        console.log(proto)
+      }
+    }
+
+    myInstanceof(new Number(1),Number); // true
+    myInstanceof(1,Number); // false
+
+  </script>
+</body>
+</html>
