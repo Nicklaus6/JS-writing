@@ -1,0 +1,75 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-24 16:24:40
+ * @LastEditTime: 2021-01-24 16:24:56
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \21道JS手写面试题\003.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节流与防抖</title>
+</head>
+
+<body>
+  <script>
+    // 节流 和 防抖 都是用来处理某个工作在短时间内触发过于频繁的方法
+
+    // 节流 throttle: 规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发多次函数，只有第一次生效。
+    // 某个函数在一段时间内只触发第一次
+    // 跟防抖不一样的是，节流是指定时间段内只执行第一次，也就是这段时间内，只需要响应第一次的请求即可，后续的请求都会被过滤掉，直到下个时间段，重新来过，周而复始。
+    // 经过 throttle 节流处理后，是按一定的频率来处理这堆频繁调用的函数，每个周期内，只响应第一次，过滤后面的请求，直到下个周期。
+
+    // 场景👇
+    // scroll滚动事件，每隔特定描述执行回调函数
+    // input输入框，每个特定时间发送请求或是展开下拉列表，（防抖也可以）
+
+    // 节流重在加锁「flag = false」
+
+    function throttle(fn, delay) {
+      let flag = true,
+        timer = null
+      return function (...args) {
+        let context = this
+        if (!flag) return
+
+        flag = false
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+          fn.apply(context, args)
+          flag = true
+        }, delay)
+      }
+    }
+
+    // 防抖 debounce: 在事件被触发n秒后再执行回调，如果在这n秒内又被触发，则重新计时。
+    // 某个函数在一段时间内只执行最后一次
+    // 意思也就是说，函数被触发时，需要先延迟，在延迟的时间内，如果再次被触发，则取消之前的延迟，重新开始延迟。这样就能达到，只响应最后一次，其余的请求都过滤掉。
+    // 经过 debounce 防抖处理后，只响应最后一次，因为防抖本质上就是通过延迟，所以实际执行函数时机会晚于函数的请求时机；
+
+    // 场景👇
+    // 浏览器窗口大小 resize 避免次数过于频繁
+    // 登陆，发短信等按钮避免发送多次请求
+    // 文本编辑器实时保存
+
+    // 防抖重在清零 「clearTimeout(timer)」
+    function debounce(fn, delay) {
+      let timer = null
+      return function (...args) {
+        let context = this
+        if (timer) clearTimeout(timer)  //进入该分支语句，说明当前正在一个计时过程中，并且又触发了相同事件。所以要取消当前的计时，重新开始计时
+
+        timer = setTimeout(function () { // 当前并没有在计时，那么就开始一个计时
+          fn.apply(context, args)
+        }, delay)
+      }
+    }
+
+  </script>
+</body>
+
+</html>
