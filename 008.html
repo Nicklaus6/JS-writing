@@ -1,0 +1,36 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-24 16:34:40
+ * @LastEditTime: 2021-01-24 18:01:05
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \21道JS手写面试题\008.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现new</title>
+</head>
+<body>
+  <script>
+    function _new(Ctor, ...args){
+      // Ctor 必须是个构造函数，不能是箭头函数
+      if(!Ctor.prototype){
+        throw new TypeError(`${Ctor} is not a constructor.`)
+      }
+      // 创建一个空对象
+      let obj = {}
+      // 将这个对象的原型和构造函数的原型关联
+      obj.__proto__ = Object.create(Ctor.prototype)
+      // 调用构造函数并将该对象作为 this 的上下文
+      let res = Ctor.apply(obj, args)
+      // 返回构造函数的结果；如果没有返回对象，就返回这个对象
+      let isObj = typeof res === 'object' && typeof res !== null
+      let isFun = typeof res === 'function'
+      return isObj || isFun ? res : obj ;
+    }
+  </script>
+</body>
+</html>
