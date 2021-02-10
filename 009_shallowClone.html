@@ -1,0 +1,44 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-02-10 20:29:31
+ * @LastEditTime: 2021-02-10 21:00:54
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \21道JS手写面试题\009_shallowClone.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写一个浅拷贝</title>
+</head>
+<body>
+  <script>
+    // 浅拷贝就是创建一个新的对象，复制原有对象的基本数据类型的值，而引用数据类型只拷贝其一层属性，再深层的就无法拷贝。
+    
+    // 实现思路：
+    //  1. 对基本类型做一个基本拷贝
+    //  2. 对引用类型开辟一个新的存储，并且拷贝一层对象属性
+
+    // 代码如下：
+    const shallowClone = (target) => {
+      if (typeof target === 'object' && target !== null) {
+        const cloneTarget = Array.isArray(target) ? [] : {};
+        for(let prop in target) {
+          if (target.hasOwnProperty(prop)) {
+            cloneTarget[prop] = target[prop]
+          }
+        }
+        return cloneTarget;
+      } else {
+        return target
+      }
+    }
+
+    // 从上面这段代码可以看出，利用类型判断，针对引用类型的对象进行 for 循环遍历对象属性赋值给目标对象的属性，基本就可以自己实现一个浅拷贝了。
+
+  </script>
+</body>
+</html>
