@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-10 21:13:23
- * @LastEditTime: 2021-02-11 21:50:35
+ * @LastEditTime: 2021-02-12 11:00:29
  * @LastEditors: Please set LastEditors
  * @Description: #手写一个深拷贝
  * @FilePath: \21道JS手写面试题\010_deepClone.js
@@ -61,7 +61,7 @@ const deepClone = function (obj, hash = new WeakMap()) {
 
   // 如果循环引用了就用 weakMap 来解决
   if (hash.has(obj)) return hash.get(obj);
-  let allDesc = Object.getOwnPropertyDescriptor(obj);
+  let allDesc = Object.getOwnPropertyDescriptors(obj);
   // 遍历传入参数所有键的特性
   let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc);
   // 继承原型链
